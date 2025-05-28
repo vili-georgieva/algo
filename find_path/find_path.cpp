@@ -149,18 +149,29 @@ void findShortestTransitPath(const string& start_station, const string& target_s
     cout << "\nGesamtkosten (Fahrzeit): " << min_cost_to_station[target_station] << endl;
 }
 
-int main(int argc, char* argv[]) {
-    if (argc != 4) {
-        cerr << "Verwendung: " << argv[0] << " <datei_graph> <startstation> <zielstation>" << endl;
+int main() {
+    string graph_filename = "fileGraph.txt";
+    string start_station;
+    string goal_station;
+
+    // Startstation aus Datei lesen
+    ifstream start_file("start.txt");
+    if (!start_file || !(getline(start_file, start_station))) {
+        cerr << "Fehler beim Lesen der Datei start.txt" << endl;
         return 1;
     }
 
-    string graph_filename = argv[1];
-    string start_station = argv[2];
-    string goal_station = argv[3];
+    // Zielstation aus Datei lesen
+    ifstream ziel_file("ziel.txt");
+    if (!ziel_file || !(getline(ziel_file, goal_station))) {
+        cerr << "Fehler beim Lesen der Datei ziel.txt" << endl;
+        return 1;
+    }
 
+    // Verkehrsnetz laden und Pfad finden
     loadTransitNetwork(graph_filename);
     findShortestTransitPath(start_station, goal_station);
 
     return 0;
 }
+
